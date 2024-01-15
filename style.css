@@ -1,0 +1,43 @@
+:root {
+    --header: red;
+    --header-text: white;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 225px auto;
+  position: relative;
+  height: 172px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: var(--header);
+  color: var(--header-text);
+  grid-template-areas:
+    "icon-section"
+    "nav-section"
+}
+
+#content {
+  display: grid;
+  grid-template-columns: auto 60% auto;
+  grid-column-gap: 1%;
+  padding: 1%;
+
+  grid-template-areas:
+    "left-sidebar"
+    "middle"
+    "right-sidebar"
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+}
