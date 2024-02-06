@@ -3,6 +3,8 @@ package com.example.ymca_fieldproject_backend;
 import org.jsoup.Jsoup;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,19 +17,22 @@ import java.util.*;
 public class SearchEngine {
 
     private static String searchText;
+    private static final String[] ignoreFiles = {"search.html", "fragments"};
 
-    public static String getSearchText() {
-        return searchText;
-    }
+    public static String getSearchText() {return searchText;}
 
-    public void setSearchText(String searchText) {
-        SearchEngine.searchText = searchText;
-    }
+    public static void setSearchText(String searchText) {SearchEngine.searchText = searchText;}
 
     public static String performSearch(Model model) throws IOException {
         // gets names of the all html files
         File filePath = new File("src/main/resources/templates");
-        String[] htmlFiles = filePath.list();
+        List<String> htmlFilesList = new ArrayList<>(Arrays.asList(filePath.list()));
+
+        // removes the files we don't want to search
+        for (String ignoreName : ignoreFiles){
+            htmlFilesList.remove(ignoreName);
+        }
+        String[] htmlFiles = htmlFilesList.toArray(new String[0]);
 
         Set<String> processedPages = new HashSet<>();
         List<SearchResult> searchResults = new ArrayList<>();
@@ -55,13 +60,12 @@ public class SearchEngine {
             if (fileContents.toLowerCase().contains(searchText) && processedPages.add(linkText)) {
                 SearchResult searchResult = new SearchResult();
                 searchResult.setLink(linkText);
-                searchResult.setInformation(extractSurroundingContext(fileContents, searchText));
+                searchResult.setInformation(retrieveSurroundingWords(fileContents, searchText));
                 searchResults.add(searchResult);
             }
         }
 
-        if (!searchText.isEmpty()) {
-            model.addAttribute("searchWord", searchText);
+        if (!searchText.trim().isEmpty()) {
             model.addAttribute("searchResults", searchResults);
         }
 
@@ -69,7 +73,7 @@ public class SearchEngine {
     }
 
     // retrieves the 20 words in front and after the searched word
-    private static String extractSurroundingContext(String sentence, String searchText) {
+    private static String retrieveSurroundingWords(String sentence, String searchText) {
         String[] words = sentence.split("\\s+");
         int index = indexOfSearchWord(words, searchText);
         int start = Math.max(0, index - 20);

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,26 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Search Test</title>
 </head>
-<body>
-<div>
-    <form action="#" th:action="@{/search}" th:object="${searchEngine}" method="post" autocomplete="off">
-        <label for="search">Search: </label>
-        <input type="text" id="search" name="search" th:field="*{searchText}">
-        <button type="submit">Search</button>
-    </form>
-</div>
+    <body>
+        <div>
+            <form action="#" th:action="@{/search}" th:object="${searchEngine}" method="post" autocomplete="off" onsubmit="return validateSearch()">
+                <label for="search">Search: </label>
+                <input type="text" id="search" name="search" th:field="*{searchText}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
 
-
-
-<div>
-    <p th:text="'Searched word: ' + ${searchWord}"></p>
-</div>
-
-<div th:if="${not #lists.isEmpty(searchResults)}">
-    <div th:each="result : ${searchResults}">
-        <a th:href="@{'/' + ${result.link}}" th:text="${result.link}"></a>
-        <p th:text="${result.information} + '...'" ></p>
-    </div>
-</div>
-</body>
+        <div th:if="${not #lists.isEmpty(searchResults)}">
+            <div th:each="result : ${searchResults}">
+                <a th:href="@{'/' + ${result.link}}" th:text="${result.link}"></a>
+                <p th:text="${result.information} + '...'" ></p>
+            </div>
+        </div>
+        <script src="/js/validateSearch.js"></script>
+    </body>
 </html>

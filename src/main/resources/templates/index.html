@@ -1,26 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
 </head>
 <body>
-<h1>Testing :)</h1>
-    <a href="/search">
-        <button>Search</button>
-    </a><br><br>
-    <a href="/test">
-        <button>Test Page</button>
-    </a>
+<div th:replace="(~{fragments/header :: navbar})">...</div>
+<h1>Main Page</h1>
 
-    <div>
-        <h2>Real Words Text</h2>
-        <p>This is a simple example text for testing a search bar. You can replace this with your own content.</p>
-
-        <p>Testing the functionality of the search bar is crucial for user experience. Make sure it works as expected in various scenarios.</p>
-
-        <p>Feel free to customize and integrate this into your project. Good luck with your development!</p>
-    </div>
 </body>
 </html>
